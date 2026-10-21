@@ -1,0 +1,25 @@
+# Dependencias
+node_modules/
+
+# Expo
+.expo/
+dist/
+web-build/
+expo-env.d.ts
+
+# Variables de entorno
+.env
+.env.local
+.env.*.local
+
+# Build nativo / claves
+*.orig.*
+*.jks
+*.p8
+*.p12
+*.key
+*.mobileprovision
+
+# Sistema
+.DS_Store
+*.log
