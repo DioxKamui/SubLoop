@@ -7,19 +7,38 @@ dist/
 web-build/
 expo-env.d.ts
 
-# Variables de entorno
+# Variables de entorno (nunca subir claves reales)
 .env
 .env.local
 .env.*.local
 
-# Build nativo / claves
+# Build nativo / claves y certificados
+.kotlin/
 *.orig.*
 *.jks
 *.p8
 *.p12
 *.key
 *.mobileprovision
+*.pem
+
+# Metro
+.metro-health-check*
+
+# Debug
+npm-debug.*
+yarn-debug.*
+yarn-error.*
+
+# macOS
+.DS_Store
+
+# TypeScript
+*.tsbuildinfo
+
+# Carpetas nativas generadas (no se editan a mano; se generan con CNG)
+/ios
+/android
 
 # Sistema
-.DS_Store
 *.log
