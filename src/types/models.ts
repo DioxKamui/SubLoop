@@ -57,20 +57,9 @@ export interface WatchlistItem {
   service?: Service;
 }
 
-// Un mes dentro del plan de rotación (guardado en `rotation_plans.plan` JSONB).
+// Un mes dentro del plan de rotación.
 export interface PlanMonth {
   month: string;        // 'YYYY-MM'
   service_ids: string[];
   total_cents: number;
-}
-
-// Plan de rotación completo (tabla `rotation_plans`).
-export interface RotationPlan {
-  id: string;
-  user_id: string;
-  generated_at: string;
-  baseline_monthly_cents: number;   // cuánto pagarías manteniendo todo activo
-  optimized_monthly_cents: number;  // promedio mensual del plan optimizado
-  annual_savings_cents: number;     // ahorro anual estimado
-  plan: PlanMonth[];
 }

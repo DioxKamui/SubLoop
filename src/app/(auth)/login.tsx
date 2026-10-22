@@ -1,8 +1,9 @@
 // ============================================================================
 // login.tsx — Pantalla de inicio de sesión
 // ----------------------------------------------------------------------------
-// Valida con zod y autentica con Supabase. No hacemos redirección manual:
-// el layout raíz detecta la nueva sesión y cambia a (tabs) automáticamente.
+// Valida con zod y autentica con Supabase. También ofrece un modo demo de un
+// clic. No hacemos redirección manual: el layout raíz detecta la nueva sesión
+// y cambia a (tabs) automáticamente.
 // ============================================================================
 import { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
@@ -12,6 +13,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 
 import { supabase } from '@/lib/supabase';
+import { loginToDemo } from '@/lib/demo';
 import { Screen } from '@/components/ui/Screen';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
@@ -27,6 +29,7 @@ type FormValues = z.infer<typeof schema>;
 export default function LoginScreen() {
   // Error de autenticación (credenciales inválidas, red, etc.).
   const [error, setError] = useState<string | null>(null);
+  const [demoLoading, setDemoLoading] = useState(false);
 
   const { control, handleSubmit, formState } = useForm<FormValues>({
     resolver: zodResolver(schema),
@@ -37,6 +40,19 @@ export default function LoginScreen() {
     setError(null);
     const { error: authError } = await supabase.auth.signInWithPassword(values);
     if (authError) setError(authError.message);
+  };
+
+  // Entra a la cuenta demo y siembra datos de ejemplo.
+  const onDemo = async () => {
+    setError(null);
+    setDemoLoading(true);
+    try {
+      await loginToDemo();
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Could not start the demo.');
+    } finally {
+      setDemoLoading(false);
+    }
   };
 
   return (
@@ -84,6 +100,10 @@ export default function LoginScreen() {
         {error ? <Text style={styles.error}>{error}</Text> : null}
 
         <Button label="Log in" onPress={handleSubmit(onSubmit)} loading={formState.isSubmitting} />
+
+        <Text style={styles.or}>or</Text>
+
+        <Button label="Try the demo" onPress={onDemo} loading={demoLoading} variant="ghost" />
       </View>
 
       <Link href="/register" style={styles.link}>
@@ -116,6 +136,12 @@ const styles = StyleSheet.create({
     color: colors.danger,
     fontFamily: fonts.body,
     fontSize: type.body,
+  },
+  or: {
+    color: colors.textMuted,
+    fontFamily: fonts.body,
+    fontSize: type.caption,
+    textAlign: 'center',
   },
   link: {
     color: colors.primary,
