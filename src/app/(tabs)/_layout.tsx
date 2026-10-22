@@ -3,6 +3,7 @@
 // ----------------------------------------------------------------------------
 // Máximo 5 pestañas (regla de UX): Home, Services, Watchlist, Plan, Settings.
 // Cada pestaña lleva icono + texto (nunca solo icono) y se resalta la activa.
+// También activa la sincronización en tiempo real con Supabase Realtime.
 // ============================================================================
 import { Tabs } from 'expo-router';
 import {
@@ -14,8 +15,12 @@ import {
 } from 'lucide-react-native';
 
 import { colors, fonts, type } from '@/constants/theme';
+import { useRealtimeSync } from '@/hooks/useRealtimeSync';
 
 export default function TabsLayout() {
+  // Sincroniza los datos en tiempo real mientras la app está abierta.
+  useRealtimeSync();
+
   return (
     <Tabs
       screenOptions={{

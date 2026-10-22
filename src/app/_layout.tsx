@@ -5,7 +5,8 @@
 //   - Sin sesión → (auth): login y registro.
 //   - Con sesión → (tabs): la app principal.
 // Además: carga las fuentes de la identidad, envuelve todo con
-// QueryClientProvider y mantiene el splash hasta que haya sesión + fuentes.
+// QueryClientProvider, configura las notificaciones locales y mantiene el
+// splash hasta que haya sesión + fuentes.
 // ============================================================================
 import { useEffect, useState } from 'react';
 import { Stack } from 'expo-router';
@@ -25,10 +26,14 @@ import {
 
 import { supabase } from '@/lib/supabase';
 import { queryClient } from '@/lib/queryClient';
+import { configureNotifications } from '@/lib/notifications';
 
 // Evitamos que el splash se oculte automáticamente; lo ocultamos nosotros
 // cuando ya sabemos si hay sesión y las fuentes están cargadas.
 SplashScreen.preventAutoHideAsync();
+
+// Configura el handler de notificaciones locales (una sola vez, al arrancar).
+configureNotifications();
 
 export default function RootLayout() {
   const [session, setSession] = useState<Session | null>(null);

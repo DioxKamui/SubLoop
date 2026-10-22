@@ -3,10 +3,11 @@
 // ----------------------------------------------------------------------------
 // CRUD de suscripciones: lista, agregar (con picker del catálogo), pausar/
 // reactivar y eliminar. Los datos vienen de los hooks de useSubscriptions.
+// Además: abre el servicio (deep link) y programa/cancela su recordatorio.
 // ============================================================================
 import { useState } from 'react';
 import { ActivityIndicator, FlatList, Modal, Pressable, StyleSheet, Text, View } from 'react-native';
-import { Trash2 } from 'lucide-react-native';
+import { ExternalLink, Trash2 } from 'lucide-react-native';
 
 import { Screen } from '@/components/ui/Screen';
 import { Button } from '@/components/ui/Button';
@@ -20,12 +21,16 @@ import {
   useSubscriptions,
   useToggleSubscription,
 } from '@/hooks/useSubscriptions';
+import { useProfile } from '@/hooks/useProfile';
 import { formatMoney } from '@/lib/money';
+import { openServiceLink } from '@/lib/deepLinks';
+import { cancelBillingReminder, scheduleBillingReminder } from '@/lib/notifications';
 import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 
 export default function SubscriptionsScreen() {
   const { data: services = [] } = useServices();
   const { data: subscriptions = [], isLoading } = useSubscriptions();
+  const { data: profile } = useProfile();
   const addSubscription = useAddSubscription();
   const toggleSubscription = useToggleSubscription();
   const deleteSubscription = useDeleteSubscription();
@@ -61,7 +66,21 @@ export default function SubscriptionsScreen() {
         billing_day: parseInt(billingDay, 10) || 1,
         priority,
       },
-      { onSuccess: () => setModalVisible(false) },
+      {
+        onSuccess: () => {
+          setModalVisible(false);
+          // Programa el recordatorio de cobro si las notificaciones están activas.
+          if (profile?.notify_enabled) {
+            const service = services.find((s) => s.id === serviceId);
+            void scheduleBillingReminder(
+              serviceId,
+              service?.name ?? 'Service',
+              parseInt(billingDay, 10) || 1,
+              profile.notify_days_before,
+            );
+          }
+        },
+      },
     );
   };
 
@@ -113,7 +132,20 @@ export default function SubscriptionsScreen() {
                 </Text>
               </Pressable>
 
-              <Pressable onPress={() => deleteSubscription.mutate(item.id)} hitSlop={8}>
+              {/* Abrir el servicio (deep link). */}
+              <Pressable onPress={() => void openServiceLink(item.service?.deep_link ?? '')} hitSlop={8}>
+                <ExternalLink color={colors.textMuted} size={20} />
+              </Pressable>
+
+              {/* Eliminar (y cancelar su recordatorio). */}
+              <Pressable
+                onPress={() =>
+                  deleteSubscription.mutate(item.id, {
+                    onSuccess: () => void cancelBillingReminder(item.service_id),
+                  })
+                }
+                hitSlop={8}
+              >
                 <Trash2 color={colors.textMuted} size={20} />
               </Pressable>
             </View>
