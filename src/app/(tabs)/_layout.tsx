@@ -13,7 +13,7 @@ import {
   Settings,
 } from 'lucide-react-native';
 
-import { colors } from '@/constants/theme';
+import { colors, fonts, type } from '@/constants/theme';
 
 export default function TabsLayout() {
   return (
@@ -26,6 +26,10 @@ export default function TabsLayout() {
         },
         tabBarActiveTintColor: colors.primary,
         tabBarInactiveTintColor: colors.textMuted,
+        tabBarLabelStyle: {
+          fontFamily: fonts.bodyMedium,
+          fontSize: type.caption,
+        },
       }}
     >
       <Tabs.Screen

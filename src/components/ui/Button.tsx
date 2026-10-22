@@ -7,7 +7,7 @@
 // ============================================================================
 import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
 
-import { colors, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 
 interface ButtonProps {
   label: string;
@@ -60,7 +60,7 @@ const styles = StyleSheet.create({
     opacity: 0.6,
   },
   label: {
+    fontFamily: fonts.bodySemi,
     fontSize: type.body,
-    fontWeight: '600',
   },
 });

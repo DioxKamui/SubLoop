@@ -7,7 +7,7 @@
 // ============================================================================
 import { StyleSheet, Text, TextInput, View, type TextInputProps } from 'react-native';
 
-import { colors, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 
 interface InputProps extends TextInputProps {
   label: string;
@@ -34,8 +34,8 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
+    fontFamily: fonts.bodyMedium,
     fontSize: type.body,
-    fontWeight: '500',
   },
   input: {
     minHeight: 52, // >=44pt: mínimo táctil
@@ -45,6 +45,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.surface,
     color: colors.text,
     paddingHorizontal: spacing.md,
+    fontFamily: fonts.body,
     fontSize: type.body,
   },
   inputError: {
@@ -52,6 +53,7 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.danger,
+    fontFamily: fonts.body,
     fontSize: type.caption,
   },
 });
