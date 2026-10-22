@@ -2,14 +2,14 @@
 // SavingsHero.tsx — Tarjeta principal de ahorro (el elemento "llamativo")
 // ----------------------------------------------------------------------------
 // Muestra, de forma animada pero breve:
-//   - un anillo "loop" con el % de ahorro,
+//   - un anillo "loop" con el % de ahorro (con gradiente y glow),
 //   - cuánto pagarías optimizando (cifra que cuenta hacia arriba),
 //   - la línea base (cuánto pagarías manteniendo todo),
 //   - y el ahorro anual estimado.
 // ============================================================================
 import { useEffect, useState } from 'react';
 import { Animated, StyleSheet, Text, View } from 'react-native';
-import Svg, { Circle } from 'react-native-svg';
+import Svg, { Circle, Defs, LinearGradient, Stop } from 'react-native-svg';
 
 import { useCountUp } from '@/hooks/useCountUp';
 import { formatMoneyWhole } from '@/lib/money';
@@ -56,9 +56,15 @@ export function SavingsHero({
     <Animated.View style={[styles.card, { opacity, transform: [{ translateY }] }]}>
       <Text style={styles.eyebrow}>ROTATION PLAN</Text>
 
-      {/* Anillo "loop": el elemento firma de la marca. */}
+      {/* Anillo "loop": el elemento firma de la marca, con gradiente. */}
       <View style={styles.ringWrap}>
         <Svg width={RING_SIZE} height={RING_SIZE}>
+          <Defs>
+            <LinearGradient id="ring-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <Stop offset="0%" stopColor={colors.primary} />
+              <Stop offset="100%" stopColor={colors.savings} />
+            </LinearGradient>
+          </Defs>
           <Circle
             cx={RING_SIZE / 2}
             cy={RING_SIZE / 2}
@@ -71,7 +77,7 @@ export function SavingsHero({
             cx={RING_SIZE / 2}
             cy={RING_SIZE / 2}
             r={RING_RADIUS}
-            stroke={colors.primary}
+            stroke="url(#ring-grad)"
             strokeWidth={RING_STROKE}
             fill="none"
             strokeLinecap="round"
@@ -110,6 +116,12 @@ const styles = StyleSheet.create({
     borderColor: colors.border,
     padding: spacing.lg,
     gap: spacing.sm,
+    // Glow dorado suave para dar profundidad.
+    shadowColor: colors.primary,
+    shadowOpacity: 0.15,
+    shadowRadius: 24,
+    shadowOffset: { width: 0, height: 8 },
+    elevation: 8,
   },
   eyebrow: {
     color: colors.textMuted,

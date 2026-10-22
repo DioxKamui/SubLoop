@@ -2,12 +2,12 @@
 // Button.tsx — Botón principal reutilizable
 // ----------------------------------------------------------------------------
 // Da feedback de pulsación, estado de carga y estado deshabilitado. Soporta
-// dos variantes: "primary" (relleno con el color de marca) y "ghost"
-// (transparente, solo texto).
+// dos variantes: "primary" (gradiente dorado) y "ghost" (transparente).
 // ============================================================================
-import { ActivityIndicator, Pressable, StyleSheet, Text } from 'react-native';
+import { ActivityIndicator, Pressable, StyleSheet, Text, View } from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
 
-import { colors, fonts, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, gradients, radius, spacing, type } from '@/constants/theme';
 
 interface ButtonProps {
   label: string;
@@ -20,23 +20,30 @@ interface ButtonProps {
 export function Button({ label, onPress, loading, disabled, variant = 'primary' }: ButtonProps) {
   const isPrimary = variant === 'primary';
 
+  const content = loading ? (
+    <ActivityIndicator color={isPrimary ? colors.onPrimary : colors.primary} />
+  ) : (
+    <Text style={[styles.label, { color: isPrimary ? colors.onPrimary : colors.primary }]}>
+      {label}
+    </Text>
+  );
+
   return (
     <Pressable
       onPress={onPress}
       disabled={disabled || loading}
       style={({ pressed }) => [
         styles.base,
-        isPrimary ? styles.primary : styles.ghost,
         // Diminuimos la opacidad al pulsar, cargar o deshabilitar.
         (pressed || disabled || loading) && styles.dimmed,
       ]}
     >
-      {loading ? (
-        <ActivityIndicator color={isPrimary ? colors.onPrimary : colors.primary} />
+      {isPrimary ? (
+        <LinearGradient colors={gradients.primary} start={{ x: 0, y: 0 }} end={{ x: 1, y: 1 }} style={styles.fill}>
+          {content}
+        </LinearGradient>
       ) : (
-        <Text style={[styles.label, { color: isPrimary ? colors.onPrimary : colors.primary }]}>
-          {label}
-        </Text>
+        <View style={styles.fill}>{content}</View>
       )}
     </Pressable>
   );
@@ -46,15 +53,14 @@ const styles = StyleSheet.create({
   base: {
     minHeight: 52, // >=44pt: cumple el mínimo táctil de accesibilidad
     borderRadius: radius.md,
+    overflow: 'hidden',
+  },
+  fill: {
+    flex: 1,
+    width: '100%',
     alignItems: 'center',
     justifyContent: 'center',
     paddingHorizontal: spacing.lg,
-  },
-  primary: {
-    backgroundColor: colors.primary,
-  },
-  ghost: {
-    backgroundColor: 'transparent',
   },
   dimmed: {
     opacity: 0.6,
