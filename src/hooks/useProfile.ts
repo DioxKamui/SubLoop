@@ -14,6 +14,7 @@ export const profileKeys = ['profile'] as const;
 export interface UpdateProfileInput {
   monthly_budget_cents: number;
   currency: string;
+  avatar: string;
   notify_enabled: boolean;
 }
 

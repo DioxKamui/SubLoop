@@ -13,6 +13,7 @@ export interface Profile {
   display_name: string;
   monthly_budget_cents: number;
   currency: string;
+  avatar: string;       // clave del monstruo elegido como "foto de perfil"
   notify_enabled: boolean;
   notify_days_before: number;
   created_at: string;
