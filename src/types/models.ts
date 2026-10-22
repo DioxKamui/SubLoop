@@ -1,20 +1,21 @@
 // ============================================================================
 // models.ts — Tipos compartidos (espejo del esquema de la base de datos)
 // ----------------------------------------------------------------------------
-// Cada interfaz representa una tabla. Usamos "string" para los uuid y las
-// fechas porque así llegan desde Supabase (Postgres los serializa a JSON).
+// IMPORTANTE: los nombres de las propiedades usan snake_case a propósito, para
+// que coincidan EXACTAMENTE con las columnas de Postgres. Así, cuando Supabase
+// devuelve una fila, podemos castearla a estos tipos sin mentirle a TypeScript.
 // El dinero va SIEMPRE en CENTAVOS enteros (number en TS, bigint en SQL).
 // ============================================================================
 
 // Perfil del usuario (tabla `profiles`).
 export interface Profile {
   id: string;
-  displayName: string;
-  monthlyBudgetCents: number;
+  display_name: string;
+  monthly_budget_cents: number;
   currency: string;
-  notifyEnabled: boolean;
-  notifyDaysBefore: number;
-  createdAt: string;
+  notify_enabled: boolean;
+  notify_days_before: number;
+  created_at: string;
 }
 
 // Servicio de streaming (tabla `services`, catálogo estático con seed).
@@ -25,49 +26,50 @@ export interface Service {
   category: 'video' | 'music' | 'other';
   icon: string;       // nombre de icono de lucide (ej. "clapperboard")
   color: string;      // color de marca del servicio (hex)
-  deepLink: string;   // esquema/url para abrir la app del servicio
-  defaultPriceCents: number;
+  deep_link: string;  // url para abrir el servicio desde la app
+  default_price_cents: number;
+  sort: number;
 }
 
 // Suscripción del usuario a un servicio (tabla `subscriptions`).
 export interface Subscription {
   id: string;
-  userId: string;
-  serviceId: string;
-  priceCents: number;
-  billingDay: number;   // día del mes (1-31) en que cobra
-  priority: number;     // 1-5, cuánto le importa al usuario
+  user_id: string;
+  service_id: string;
+  price_cents: number;
+  billing_day: number;   // día del mes (1-31) en que cobra
+  priority: number;      // 1-5, cuánto le importa al usuario
   status: 'active' | 'paused';
   notes: string | null;
-  createdAt: string;
-  service?: Service;    // relación resuelta (join con `services`)
+  created_at: string;
+  service?: Service;     // relación resuelta (join con `services`)
 }
 
 // Ítem de la watchlist (tabla `watchlist`).
 export interface WatchlistItem {
   id: string;
-  userId: string;
-  serviceId: string;
+  user_id: string;
+  service_id: string;
   title: string;
   status: 'want' | 'done';
-  createdAt: string;
+  created_at: string;
   service?: Service;
 }
 
 // Un mes dentro del plan de rotación (guardado en `rotation_plans.plan` JSONB).
 export interface PlanMonth {
   month: string;        // 'YYYY-MM'
-  serviceIds: string[];
-  totalCents: number;
+  service_ids: string[];
+  total_cents: number;
 }
 
 // Plan de rotación completo (tabla `rotation_plans`).
 export interface RotationPlan {
   id: string;
-  userId: string;
-  generatedAt: string;
-  baselineMonthlyCents: number;   // cuánto pagarías manteniendo todo activo
-  optimizedMonthlyCents: number;  // promedio mensual del plan optimizado
-  annualSavingsCents: number;     // ahorro anual estimado
-  months: PlanMonth[];
+  user_id: string;
+  generated_at: string;
+  baseline_monthly_cents: number;   // cuánto pagarías manteniendo todo activo
+  optimized_monthly_cents: number;  // promedio mensual del plan optimizado
+  annual_savings_cents: number;     // ahorro anual estimado
+  plan: PlanMonth[];
 }

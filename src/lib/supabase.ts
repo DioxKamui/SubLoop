@@ -31,3 +31,19 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey, {
     detectSessionInUrl: false,  // solo aplica en web; en RN no hay URL de sesión
   },
 });
+
+// ============================================================================
+// getUserId — Devuelve el id del usuario con sesión (o lanza si no hay).
+// ----------------------------------------------------------------------------
+// Lo usan los hooks al insertar/actualizar: las políticas RLS exigen que
+// user_id coincida con auth.uid(), así que siempre lo seteamos explícitamente.
+// ============================================================================
+export async function getUserId(): Promise<string> {
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    throw new Error('No autenticado.');
+  }
+  return user.id;
+}
