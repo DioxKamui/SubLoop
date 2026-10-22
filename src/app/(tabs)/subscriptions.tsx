@@ -21,7 +21,7 @@ import {
   useToggleSubscription,
 } from '@/hooks/useSubscriptions';
 import { formatMoney } from '@/lib/money';
-import { colors, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 
 export default function SubscriptionsScreen() {
   const { data: services = [] } = useServices();
@@ -191,8 +191,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.heading,
-    fontWeight: '700',
   },
   loading: {
     marginTop: spacing.lg,
@@ -215,11 +215,12 @@ const styles = StyleSheet.create({
   },
   rowTitle: {
     color: colors.text,
+    fontFamily: fonts.bodySemi,
     fontSize: type.body,
-    fontWeight: '600',
   },
   rowMeta: {
     color: colors.textMuted,
+    fontFamily: fonts.body,
     fontSize: type.caption,
   },
   statusBadge: {
@@ -229,8 +230,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   statusText: {
+    fontFamily: fonts.bodySemi,
     fontSize: type.caption,
-    fontWeight: '600',
   },
   statusActive: {
     color: colors.savings,
@@ -254,13 +255,13 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.title,
-    fontWeight: '700',
   },
   fieldLabel: {
     color: colors.text,
+    fontFamily: fonts.bodyMedium,
     fontSize: type.body,
-    fontWeight: '500',
   },
   priorityRow: {
     flexDirection: 'row',
@@ -282,8 +283,8 @@ const styles = StyleSheet.create({
   },
   priorityText: {
     color: colors.textMuted,
+    fontFamily: fonts.bodySemi,
     fontSize: type.body,
-    fontWeight: '600',
   },
   priorityTextActive: {
     color: colors.onPrimary,

@@ -20,7 +20,7 @@ import {
   useToggleWatchlistItem,
   useWatchlist,
 } from '@/hooks/useWatchlist';
-import { colors, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 
 export default function WatchlistScreen() {
   const { data: services = [] } = useServices();
@@ -147,8 +147,8 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.heading,
-    fontWeight: '700',
   },
   loading: {
     marginTop: spacing.lg,
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
   },
   rowTitle: {
     color: colors.text,
+    fontFamily: fonts.bodySemi,
     fontSize: type.body,
-    fontWeight: '600',
   },
   rowTitleDone: {
     textDecorationLine: 'line-through',
@@ -180,6 +180,7 @@ const styles = StyleSheet.create({
   },
   rowMeta: {
     color: colors.textMuted,
+    fontFamily: fonts.body,
     fontSize: type.caption,
   },
   statusBadge: {
@@ -189,8 +190,8 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   statusText: {
+    fontFamily: fonts.bodySemi,
     fontSize: type.caption,
-    fontWeight: '600',
   },
   statusDone: {
     color: colors.savings,
@@ -214,8 +215,8 @@ const styles = StyleSheet.create({
   },
   modalTitle: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.title,
-    fontWeight: '700',
   },
   modalActions: {
     flexDirection: 'row',

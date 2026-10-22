@@ -15,7 +15,7 @@ import { supabase } from '@/lib/supabase';
 import { Screen } from '@/components/ui/Screen';
 import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
-import { colors, spacing, type } from '@/constants/theme';
+import { colors, fonts, spacing, type } from '@/constants/theme';
 
 // Esquema de validación: correo válido y contraseña con mínimo de caracteres.
 const schema = z.object({
@@ -101,11 +101,12 @@ const styles = StyleSheet.create({
   },
   title: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.display,
-    fontWeight: '700',
   },
   subtitle: {
     color: colors.textMuted,
+    fontFamily: fonts.body,
     fontSize: type.subtitle,
   },
   form: {
@@ -113,10 +114,12 @@ const styles = StyleSheet.create({
   },
   error: {
     color: colors.danger,
+    fontFamily: fonts.body,
     fontSize: type.body,
   },
   link: {
     color: colors.primary,
+    fontFamily: fonts.bodyMedium,
     fontSize: type.body,
     textAlign: 'center',
     marginTop: spacing.lg,

@@ -16,7 +16,7 @@ import { Button } from '@/components/ui/Button';
 import { Input } from '@/components/ui/Input';
 import { useProfile, useUpdateProfile } from '@/hooks/useProfile';
 import { supabase } from '@/lib/supabase';
-import { colors, spacing, type } from '@/constants/theme';
+import { colors, fonts, spacing, type } from '@/constants/theme';
 import type { Profile } from '@/types/models';
 
 export default function SettingsScreen() {
@@ -87,8 +87,8 @@ function SettingsForm({ profile }: { profile: Profile }) {
 const styles = StyleSheet.create({
   title: {
     color: colors.text,
+    fontFamily: fonts.display,
     fontSize: type.heading,
-    fontWeight: '700',
     marginBottom: spacing.md,
   },
   loading: {
@@ -105,6 +105,7 @@ const styles = StyleSheet.create({
   },
   switchLabel: {
     color: colors.text,
+    fontFamily: fonts.body,
     fontSize: type.body,
   },
 });

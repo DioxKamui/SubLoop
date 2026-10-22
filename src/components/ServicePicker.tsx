@@ -8,7 +8,7 @@
 import { Pressable, ScrollView, StyleSheet, Text } from 'react-native';
 
 import { ServiceIcon } from '@/components/ServiceIcon';
-import { colors, radius, spacing, type } from '@/constants/theme';
+import { colors, fonts, radius, spacing, type } from '@/constants/theme';
 import type { Service } from '@/types/models';
 
 interface ServicePickerProps {
@@ -63,10 +63,11 @@ const styles = StyleSheet.create({
   },
   label: {
     color: colors.text,
+    fontFamily: fonts.body,
     fontSize: type.body,
   },
   labelSelected: {
     color: colors.primary,
-    fontWeight: '600',
+    fontFamily: fonts.bodySemi,
   },
 });

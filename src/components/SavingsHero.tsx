@@ -114,7 +114,7 @@ const styles = StyleSheet.create({
   eyebrow: {
     color: colors.textMuted,
     fontSize: type.caption,
-    fontWeight: '600',
+    fontFamily: fonts.bodySemi,
     letterSpacing: 2,
     textTransform: 'uppercase',
   },
